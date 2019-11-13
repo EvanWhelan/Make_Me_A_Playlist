@@ -1,46 +1,67 @@
-loadRedditResults = (time) => {
-    console.log("Connecting to reddit.");
-    console.log(time);
-    var url = "https://www.reddit.com/r/listentothis/top.json?t=year&limit=5000";
+loadRedditResults = (selectedTime) => {
+    var timeSpan = selectedTime.innerText;
+    var time = "";
+    switch (timeSpan) {
+        case "Last Hour":
+            time = "hour";
+            break;
+        case "Last 24 Hours":
+            time="day";
+            break;
+        case "Last Week":
+            time="week";
+        break;
+        case "Last Month":
+            time="month";
+        break;
+        case "Last Year":
+            time="year";
+        break;            
+        case "All Time":
+            time="all";
+        break; 
+        default:
+            time="all";
+            break;
+    }
+
+    var url = "https://www.reddit.com/r/listentothis/top.json?t=" + time + "&limit=5000";
+    document.getElementById("dt").innerText = timeSpan;
     fetch(url)
-    .then(function(response){
+    .then((response) => {
         return response.json();
     })
     .then(function(json){
-        var listOfPosts = document.getElementById("posts");
-        listOfPosts.innerHTML = "";
+        var wrapper = document.getElementById("results-data");
+        wrapper.innerHTML = "";
         var topPosts = json.data.children;
         console.log(topPosts);
         for(let i = 0; i < topPosts.length; i++){
-            var currentPost = topPosts[i].data;
-            var li = document.createElement("li");
-            var flair = currentPost.link_flair_text;
+            var currentPost = topPosts[i];
+            if(currentPost.kind != "t3") {
+                continue;
+            }
+            currentPost = currentPost.data;
             if (isValidPost(currentPost)) {
-                generateInfoPanel(li, currentPost);
-                listOfPosts.appendChild(li);
-            }   
+                generateInfoPanel(wrapper, currentPost);
+            }
         }
     });
 }
 
-generateInfoPanel = (listItem, redditPost) => {
-
-    var title = redditPost.title;
-    var link = redditPost.url;
+generateInfoPanel = (parentWrapper, redditPost) => {
+    var gridRow = document.createElement("div");
+    gridRow.className = "row data-row";
     
-    var titleElement = document.createElement("h3");
-    var titleText = document.createTextNode(title);
+    var youtubePanel = generateYoutubePanel(redditPost);
+    var redditPanel = generateRedditPanel(redditPost);
+    var spotifyPanel = generateSpotifyPanel();  
 
-    titleElement.appendChild(titleText);
+    gridRow.appendChild(youtubePanel);
+    gridRow.appendChild(redditPanel);
+    gridRow.appendChild(spotifyPanel);
 
-    var linkElement = document.createElement("a");
-    var linkText = document.createTextNode(link);
-    linkElement.appendChild(linkText);
-    linkElement.title = titleText;
-    linkElement.href = link;
-
-    listItem.appendChild(titleElement); 
-    listItem.appendChild(linkElement);
+    parentWrapper.appendChild(gridRow);
 
 }
 
@@ -48,13 +69,69 @@ isValidPost = (post) => {
     var title = post.title.toLowerCase();
     var validTitle = !title.includes("discussion") && !title.includes("playlist");
 
-    var validFlair = true;
-    var flair = post.link_flair_text;
-
-    if (flair != null && !flair.toLowerCase().includes("discussion")  && !flair.toLowerCase().includes("playlist")) {
-        validFlair = true;
+    if(!post.url.toLowerCase().includes("youtube.com")) {
+        return false;
     }
 
-    return validFlair && validTitle;
+    var validFlair = isValidFlair(post.link_flair_text);
+    var validArchive = post.archived == true;
 
+    return validFlair && validTitle && validArchive;
+}
+
+isValidFlair = (flair) => {
+    if (flair == null) {
+        return false;
+    } else {
+        var flairText = flair.toLowerCase();
+        return !flairText.includes("discussion") && 
+        !flairText.includes("playlist");
+    }
+}
+
+cleanRedditTitle = (redditTitle) => {
+    return redditTitle.replace(/\(.*?\)|\[.*?\]/g, "").replace("--", "-");
+}
+
+generateRedditPanel = (redditPost) => {
+    var colDiv = document.createElement("div");
+    colDiv.className = "col-sm-4";
+
+    var title = cleanRedditTitle(redditPost.title);
+    var titleElement = document.createElement("h4");
+    var titleText = document.createTextNode(title);
+    titleElement.appendChild(titleText); 
+
+    colDiv.appendChild(titleElement);
+
+    return colDiv;
+}
+
+generateYoutubePanel = (redditPost) => {
+    var colDiv = document.createElement("div");
+    colDiv.className = "col-sm-4";
+
+    var iFrameElement = document.createElement("iframe");
+   
+    var youtubeSrc = redditPost.url.replace("watch?v=" , "embed/");
+    iFrameElement.setAttribute("src", youtubeSrc);
+    iFrameElement.style.height = "100%";
+    iFrameElement.style.width = "75%";
+
+    colDiv.appendChild(iFrameElement);
+    
+    return colDiv;
+}
+
+generateSpotifyPanel = () => {
+    var colDiv = document.createElement("div");
+    colDiv.className = "col-sm-4";
+
+    var titleElement = document.createElement("h4");
+    var titleText = document.createTextNode("SPOTIFY HERE");
+    titleElement.appendChild(titleText); 
+
+    colDiv.appendChild(titleElement);
+    
+    return colDiv;
 }

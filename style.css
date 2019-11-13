@@ -10,3 +10,22 @@ li {
 #click {
     margin: 1%;
 }
+
+#wrapper {
+    text-align: center;
+}
+
+#redditDropdown {
+    text-align: center;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.data-row {
+    background: rgb(214, 190, 190);
+    margin: 2%;
+    border-radius: 25px;
+    border: 2px solid black;
+    padding: 20px;
+    box-shadow: 1px 1px;
+}

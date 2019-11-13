@@ -11,23 +11,31 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <button type="button" class="btn btn-primary" onclick="loadRedditResults()" id="click">Top results from r/listentothis</button>
-    <div class="dropdown show">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="dropdown show" id="redditDropdown">
+            <a class="btn btn-secondary dropdown-toggle" id="dt" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Top from r/listentothis
             </a>
-          
+
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="#" onclick="loadRedditResults(this.Text)">Today</a>
-              <a class="dropdown-item" href="#" onclick="loadRedditResults(this.Text)">Last 24 Hours</a>
-              <a class="dropdown-item" href="#" onclick="loadRedditResults(this.Text)">Last Week</a>
-              <a class="dropdown-item" href="#" onclick="loadRedditResults(this.Text)">Last Month</a>
-              <a class="dropdown-item" href="#" onclick="loadRedditResults(this.Text)">Last Year</a>
-              <a class="dropdown-item" href="#" onclick="loadRedditResults(this.Text)">All Time</a>
+              <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">Today</a>
+              <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">Last 24 Hours</a>
+              <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">Last Week</a>
+              <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">Last Month</a>
+              <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">Last Year</a>
+              <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">All Time</a>
             </div>
           </div>
-    <ul id="posts"> 
-    </ul>
+        <div id="wrapper">
+          <div id="header">
+              <div class="row header-row">
+                  <div class="col-sm-4"><h3>YouTube</h3></div>
+                  <div class="col-sm-4"><h3>Reddit</h3></div>
+                  <div class="col-sm-4"><h3>Spotify</h3></div>
+              </div> 
+          </div>
+          <div id="results-data">
+          </div>
+        </div>          
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
