@@ -2,7 +2,7 @@ loadRedditResults = (selectedTime) => {
     var timeSpan = selectedTime.innerText;
     var time = "";
     switch (timeSpan) {
-        case "Last Hour":
+        case "Today":
             time = "hour";
             break;
         case "Last 24 Hours":
@@ -47,6 +47,25 @@ loadRedditResults = (selectedTime) => {
             }
         }
     });
+}
+
+setStreamingServiceColumn = (dropdownElement, index) => {
+    var selectedColumn = document.getElementById("column" + index);
+    var stylingRulesName = applyStyling(dropdownElement.innerText);
+    selectedColumn.classList.add(stylingRulesName);
+}
+
+generateStylingRules = (serviceName) => {
+    switch (serviceName.toLowerCase()) {
+        case "youtube":
+            return "youtubeStyle";
+        case "spotify":
+            return "spotifyStyle";
+        case "soundCloud":
+            return "soundcloudStyle";
+        default:
+            return "";
+    }
 }
 
 generateInfoPanel = (parentWrapper, redditPost) => {
