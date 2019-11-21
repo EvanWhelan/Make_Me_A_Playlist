@@ -97,14 +97,28 @@ generateRedditPanel = (redditPost) => {
     var colDiv = document.createElement("div");
     colDiv.className = "col-sm-4";
 
+    var youtubeUrl = redditPost.url;
+
     var title = cleanRedditTitle(redditPost.title);
     var titleElement = document.createElement("h4");
     var titleText = document.createTextNode(title);
     titleElement.appendChild(titleText); 
 
+    var addToPlaylistButton = document.createElement("button");
+    addToPlaylistButton.innerText = "Add To Playlist";
+    addToPlaylistButton.onclick = addToYoutubePlaylist(youtubeUrl);
+
     colDiv.appendChild(titleElement);
 
     return colDiv;
+}
+
+addToYoutubePlaylist = (url) => {
+    displayPlaylistsModal();
+}
+
+displayPlaylistsModal = () => {
+    listUserPlaylists();
 }
 
 generateYoutubePanel = (redditPost) => {
