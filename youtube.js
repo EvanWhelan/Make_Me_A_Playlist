@@ -31,12 +31,6 @@ function storePlaylists() {
         })
 }
 
-function displayPlaylists() {
-    _playLists.forEach(playlist => {
-        console.log(playlist);
-    })
-}
-
 function loadClient() {
     gapi.client.setApiKey("");
     return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
@@ -113,14 +107,29 @@ function addVideoToPlaylist(playlist, url) {
             });
 }
 
-function initYoutubeAuth() {   
+function fetchChannelStatus() {
+    gapi.client.youtube.channels.list({
+            "part": "snippet,contentDetails,statistics",
+            "mine": true
+        })
+        .then(function (response) {
+                // Handle the results here (response.result has the parsed body).
+                console.log(response.result);
+                return true;
+        },
+        function (err) {
+            console.error("Execute error", err);
+            return false;
+        });
+}
+
+function initYoutubeAuth() {
     try {
         gapi.load("client:auth2", function () {
             gapi.auth2.init({
                 client_id: ""
             });
         });
-
     } catch (error) {
         console.log(error)
     }

@@ -102,8 +102,18 @@ function generatePlaylistButton(streamingService, youtubeUrl) {
     button.onclick = function () {
         if(!_isAuthorised || !_isLoaded) {
             authenticate().then(loadClient).then( () => {
-                displayPlaylistsModal(youtubeUrl);
+                var userChannelExists = fetchChannelStatus();
+                console.log(userChannelExists);
+                if(userChannelExists) {
+                    displayPlaylistsModal(youtubeUrl);
+                }
+                else{
+                    alert("Channel doesn't exist");
+                }
             });
+        }
+        else{
+            
         }
     }
     
