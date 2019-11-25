@@ -54,7 +54,7 @@ function loadClient() {
 function fetchUsersPlaylists() {
 
     if (!_isAuthorised || !_isLoaded) {
-        return;
+        initYoutubeAuth();
     }
 
     return gapi.client.youtube.playlists.list({
@@ -85,8 +85,7 @@ function generateListOfPlaylists(playlistJson) {
 
 function addVideoToPlaylist(playlist, url) {
     if (!_isAuthorised || !_isLoaded) {
-        console.log("Not loaded/auth");
-        return;
+        initYoutubeAuth();
     }
 
     var urlSegments = url.split("watch?v=");
@@ -112,10 +111,9 @@ function addVideoToPlaylist(playlist, url) {
             function (err) {
                 console.error("Execute error", err);
             });
-
 }
 
-function initYoutubeAuth() {
+function initYoutubeAuth() {   
     try {
         gapi.load("client:auth2", function () {
             gapi.auth2.init({

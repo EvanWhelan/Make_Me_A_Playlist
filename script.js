@@ -100,7 +100,11 @@ function generatePlaylistButton(streamingService, youtubeUrl) {
     button.textContent = `Add to ${streamingService} playlist`;
 
     button.onclick = function () {
-        displayPlaylistsModal(youtubeUrl);
+        if(!_isAuthorised || !_isLoaded) {
+            authenticate().then(loadClient).then( () => {
+                displayPlaylistsModal(youtubeUrl);
+            });
+        }
     }
     
     columnDiv.appendChild(button);
@@ -124,6 +128,12 @@ function generateRedditPanel(redditPost) {
 }
 
 function displayPlaylistsModal(youtubeUrl) {
+    
+    if(!_isAuthorised || !_isLoaded) {
+
+        authenticate().then(loadClient);
+    }
+
     _youtubeUrl = youtubeUrl;
     var wrapper = document.getElementById("youtubePlaylistsBody");
     wrapper.innerHTML = "";
