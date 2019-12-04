@@ -13,9 +13,13 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="initYoutubeAuth()">
+<body>
   <form action="/login" method="GET" id="spotify-login"></form>
+  <form action="/user_details" method="GET" id="user-details"></form>
+
   <button form="spotify-login">Login to Spotify</button>
+  <button form="user-details">Show User Details</button>
+
   <div class="dropdown show" id="redditDropdown">
     <a class="btn btn-secondary dropdown-toggle" id="dt" role="button" id="dropdownMenuLink" data-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
