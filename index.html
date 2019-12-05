@@ -10,14 +10,14 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="static/style.css">
 </head>
 
-<body>
-  <form action="/login" method="GET" id="spotify-login"></form>
+<body onload="initYoutubeAuth()">
+  <!-- <form action="/login" method="GET" id="spotify-login"></form> -->
   <form action="/user_details" method="GET" id="user-details"></form>
 
-  <button form="spotify-login">Login to Spotify</button>
+  <button><a href="/login">Login to Spotify</a></button>
   <button form="user-details">Show User Details</button>
 
   <div class="dropdown show" id="redditDropdown">
@@ -27,10 +27,10 @@
     </a>
 
     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-      <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">Today</a>
+      <a class="dropdown-item" href="#" onclick = "loadRedditResults(this)">Today</a>
       <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">Last 24 Hours</a>
       <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">Last Week</a>
-      <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">Last Month</a>
+      <a class="dropdown-item" href="#"onclick="loadRedditResults(this)">Last Month</a>
       <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">Last Year</a>
       <a class="dropdown-item" href="#" onclick="loadRedditResults(this)">All Time</a>
     </div>
@@ -77,9 +77,10 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
-  <script src="script.js"></script>
+  <script src="static/script.js"></script>
   <script src="https://apis.google.com/js/api.js"></script>
-  <script src="youtube.js"></script>
+  <script src="static/youtube.js"></script>
+  <script src="static/youtube_node.js"></script>
 </body>
 
 </html>

@@ -19,7 +19,7 @@ var _userDetails = {};
 
 var app = express();
 
-
+app.use("/static", express.static('./static/'));
 
 var generateRandomString = function (length) {
   var text = '';
@@ -89,7 +89,6 @@ app.get('/callback', function (req, res) {
 
     request.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
-
         var access_token = body.access_token,
           refresh_token = body.refresh_token;
 
@@ -124,13 +123,13 @@ app.get('/callback', function (req, res) {
 });
 
 app.get('/user_details', (req, res) => {
-    if (Object.entries(_userDetails).length === 0 && _userDetails.constructor === Object) {
-      console.log("User hasn't logged in");
-    }
-    else {
-      console.log(JSON.stringify(_userDetails));
-      res.send(JSON.stringify(_userDetails));
-    }
+  if (Object.entries(_userDetails).length === 0 && _userDetails.constructor === Object) {
+    console.log("User hasn't logged in");
+    res.sendFile(path.join(__dirname, '/index.html'));
+  } else {
+    console.log(JSON.stringify(_userDetails));
+    res.send(JSON.stringify(_userDetails));
+  }
 });
 
 app.get('/refresh_token', function (req, res) {
@@ -160,7 +159,7 @@ app.get('/refresh_token', function (req, res) {
   });
 });
 
-
 app.listen(8888, () => {
   console.log("Listening on port 8888");
 })
+

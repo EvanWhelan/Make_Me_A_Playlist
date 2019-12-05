@@ -17,10 +17,6 @@ function authenticate() {
 }
 
 function storePlaylists() {
-    if (!_isAuthorised || !_isLoaded) {
-        return;
-    }
-
     return gapi.client.youtube.playlists.list({
             "part": "snippet.contentDetails",
             "maxResults": 25,
@@ -80,8 +76,9 @@ function generateListOfPlaylists(playlistJson) {
 function addVideoToPlaylist(playlist, url) {
     if (!_isAuthorised || !_isLoaded) {
         initYoutubeAuth();
-    }
+    }   
 
+    console.log("Is Authorised");
     var urlSegments = url.split("watch?v=");
     var videoId = urlSegments[urlSegments.length - 1];
 

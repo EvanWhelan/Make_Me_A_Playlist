@@ -1,6 +1,7 @@
 var _youtubeUrl = "";
 
 function loadRedditResults(selectedTime) {
+    console.log("LOADING REDDIT RESULTS");
     var timeSpan = selectedTime.innerText;
     var time = "";
     switch (timeSpan) {
@@ -78,8 +79,8 @@ function generateInfoPanel(parentWrapper, redditPost) {
     var redditPanel = generateRedditPanel(redditPost);
     var spotifyPanel = generateSpotifyPanel();
 
-    var youtubePlaylistButtonColumn = generatePlaylistButton("YouTube", redditPost.url);
-    var spotifyPlaylistButtonColumn = generatePlaylistButton("Spotify", "");
+    var youtubePlaylistButtonColumn = generateYoutubePlaylistButton(redditPost.url);
+    var spotifyPlaylistButtonColumn = generateSpotifyPlaylistButton();
 
     gridRow.appendChild(youtubePanel);
     gridRow.appendChild(youtubePlaylistButtonColumn)
@@ -91,32 +92,43 @@ function generateInfoPanel(parentWrapper, redditPost) {
 
 }
 
-function generatePlaylistButton(streamingService, youtubeUrl) {
+function generateYoutubePlaylistButton(youtubeUrl) {
     var columnDiv = document.createElement("div");
     columnDiv.className = "col-sm-1";
 
     var button = document.createElement("button");
     button.className = "btn btn-primary";
-    button.textContent = `Add to ${streamingService} playlist`;
+    button.textContent = "Add to YouTube Playlist";
 
     button.onclick = function () {
-        if(!_isAuthorised || !_isLoaded) {
-            authenticate().then(loadClient).then( () => {
-                var userChannelExists = fetchChannelStatus();
-                console.log(userChannelExists);
-                if(userChannelExists) {
-                    displayPlaylistsModal(youtubeUrl);
-                }
-                else{
-                    alert("Channel doesn't exist");
-                }
-            });
-        }
-        else{
-            
-        }
+        authenticate().then(loadClient).then(() => {
+            var userChannelExists = fetchChannelStatus();
+            console.log(userChannelExists);
+            if (userChannelExists) {
+                displayPlaylistsModal(youtubeUrl);
+            } else {
+                alert("Channel doesn't exist");
+            }
+        });
     }
-    
+
+    columnDiv.appendChild(button);
+
+    return columnDiv;
+}
+
+function generateSpotifyPlaylistButton() {
+    var columnDiv = document.createElement("div");
+    columnDiv.className = "col-sm-1";
+
+    var button = document.createElement("button");
+    button.className = "btn btn-primary";
+    button.textContent = "Add to Spotify Playlist";
+
+    button.onclick = function () {
+        console.log("TODO - Add to Spotify playlist");
+    }
+
     columnDiv.appendChild(button);
 
     return columnDiv;
@@ -125,8 +137,6 @@ function generatePlaylistButton(streamingService, youtubeUrl) {
 function generateRedditPanel(redditPost) {
     var colDiv = document.createElement("div");
     colDiv.className = "col-sm-4";
-
-    var youtubeUrl = redditPost.url;
 
     var title = cleanRedditTitle(redditPost.title);
     var titleElement = document.createElement("h4");
@@ -138,8 +148,8 @@ function generateRedditPanel(redditPost) {
 }
 
 function displayPlaylistsModal(youtubeUrl) {
-    
-    if(!_isAuthorised || !_isLoaded) {
+
+    if (!_isAuthorised || !_isLoaded) {
 
         authenticate().then(loadClient);
     }
@@ -153,19 +163,19 @@ function displayPlaylistsModal(youtubeUrl) {
     _playLists.forEach(playlist => {
         var playlistInfo = document.createElement("div");
         playlistInfo.className = "row";
-        
+
         var playlistTitleDiv = document.createElement("div");
         playlistTitleDiv.className = "col-sm-9";
         playlistTitleDiv.innerText = playlist.title;
 
         var playlistButtonDiv = document.createElement("div");
         playlistButtonDiv.className = "col-sm-3";
-        
+
         var addToPlaylistButton = document.createElement("button");
         addToPlaylistButton.className = "btn btn-secondary";
         addToPlaylistButton.innerText = "Add Here";
         addToPlaylistButton.onclick = function () {
-            addVideoToPlaylist(playlist, youtubeUrl);   
+            addVideoToPlaylist(playlist, youtubeUrl);
         }
 
         playlistButtonDiv.appendChild(addToPlaylistButton);
